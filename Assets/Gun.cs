@@ -12,13 +12,35 @@ public class Gun : MonoBehaviour
     public ParticleSystem muzzleFlash;
     public GameObject impactEffect;
 
+    public int maxAmmo = 7;
+    public int currentAmmo;
+    public float reloadTime = 1.35f;
+    private bool isReloading = false;
+
     private float nextTimeToFire = 0f;
 
     [SerializeField] private Animator animator;
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        currentAmmo = maxAmmo;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (isReloading)
+        {
+            return;
+        }
+
+        if (currentAmmo <= 0)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
+
         if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
@@ -26,10 +48,26 @@ public class Gun : MonoBehaviour
         }
     }
 
+    IEnumerator Reload()
+    {
+        isReloading = true;
+
+        animator.SetBool("isReloading", true);
+
+        yield return new WaitForSeconds(reloadTime);
+
+        animator.SetBool("isReloading", false);
+
+        currentAmmo = maxAmmo;
+        isReloading = false;
+    }
+
     void Shoot()
     {
         muzzleFlash.Play();
         animator.SetTrigger("isFiring");
+
+        currentAmmo--;
 
         RaycastHit hit;
 
