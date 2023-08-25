@@ -1017,8 +1017,6 @@ MonoBehaviour:
   currentAmmo: 0
   reloadTime: 1.35
   animator: {fileID: 1650700996}
-  smooth: 8
-  multiplier: 2
 --- !u!95 &1650700996
 Animator:
   serializedVersion: 5
