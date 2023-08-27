@@ -13,19 +13,12 @@ public class Gun : MonoBehaviour
     public GameObject impactEffect;
 
     public int maxAmmo = 7;
-    public int currentAmmo;
+    public int currentAmmo = 7;
     public float reloadTime = 1.35f;
-    private bool isReloading = false;
-
-    private float nextTimeToFire = 0f;
+    public bool isReloading = false;
+    public float nextTimeToFire = 0f;
 
     [SerializeField] private Animator animator;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        currentAmmo = maxAmmo;
-    }
 
     // Update is called once per frame
     void Update()
