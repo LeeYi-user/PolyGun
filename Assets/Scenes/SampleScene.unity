@@ -1181,21 +1181,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!114 &939038558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732331059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e095994c4afea14aba7ff1f12f0b58e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  realGun: {fileID: 1650700995}
-  muzzleFlash: {fileID: 2006682335}
-  animator: {fileID: 939038557}
 --- !u!1 &956112339
 GameObject:
   m_ObjectHideFlags: 0
@@ -2066,14 +2051,14 @@ MonoBehaviour:
   muzzleFlash: {fileID: 546658977}
   impactEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
   maxAmmo: 7
-  currentAmmo: 7
   reloadTime: 1.35
-  isReloading: 0
-  nextTimeToFire: 0
   animator: {fileID: 1650700996}
   BulletSpawnPoint: {fileID: 546658978}
   BulletTrail: {fileID: 6082088667196707117, guid: 84077dac0b5c6f64fb7baa8d8751f7a5, type: 3}
   BulletSpeed: 100
+  fakeAnimator: {fileID: 939038557}
+  fakeMuzzleFlash: {fileID: 2006682335}
+  fakeBulletSpawnPoint: {fileID: 2100990644}
 --- !u!95 &1650700996
 Animator:
   serializedVersion: 5
@@ -2318,3 +2303,8 @@ Transform:
   m_Father: {fileID: 1033401710}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &2100990644 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4000011227296186, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
+  m_PrefabInstance: {fileID: 2006682334}
+  m_PrefabAsset: {fileID: 0}
