@@ -742,6 +742,11 @@ ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 198000012944515248, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
   m_PrefabInstance: {fileID: 546658976}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &546658978 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4000011227296186, guid: 9defeac88977c0d448aa4541073ee9e4, type: 3}
+  m_PrefabInstance: {fileID: 546658976}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &559460507 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6821555726397967208, guid: 497cf88255a97c645bb6c2a722372b12, type: 3}
@@ -2066,6 +2071,9 @@ MonoBehaviour:
   isReloading: 0
   nextTimeToFire: 0
   animator: {fileID: 1650700996}
+  BulletSpawnPoint: {fileID: 546658978}
+  BulletTrail: {fileID: 6082088667196707117, guid: 84077dac0b5c6f64fb7baa8d8751f7a5, type: 3}
+  BulletSpeed: 100
 --- !u!95 &1650700996
 Animator:
   serializedVersion: 5
