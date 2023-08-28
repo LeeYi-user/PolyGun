@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Gun : MonoBehaviour
+public class Gun : NetworkBehaviour
 {
     public float damage = 10f;
     public float range = 100f;
@@ -87,6 +88,9 @@ public class Gun : MonoBehaviour
             TrailRenderer trail = Instantiate(BulletTrail, BulletSpawnPoint.position, Quaternion.identity);
             TrailRenderer fakeTrail = Instantiate(BulletTrail, fakeBulletSpawnPoint.position, Quaternion.identity);
 
+            fakeTrail.GetComponent<NetworkObject>().Spawn(true);
+            fakeTrail.gameObject.SetActive(false);
+
             StartCoroutine(SpawnTrail(trail, hit.point, hit.normal, true));
             StartCoroutine(SpawnTrail(fakeTrail, hit.point, hit.normal, true));
         }
@@ -94,6 +98,9 @@ public class Gun : MonoBehaviour
         {
             TrailRenderer trail = Instantiate(BulletTrail, BulletSpawnPoint.position, Quaternion.identity);
             TrailRenderer fakeTrail = Instantiate(BulletTrail, fakeBulletSpawnPoint.position, Quaternion.identity);
+
+            fakeTrail.GetComponent<NetworkObject>().Spawn(true);
+            fakeTrail.gameObject.SetActive(false);
 
             StartCoroutine(SpawnTrail(trail, BulletSpawnPoint.position + fpsCam.transform.forward * range, Vector3.zero, false));
             StartCoroutine(SpawnTrail(fakeTrail, fakeBulletSpawnPoint.position + fpsCam.transform.forward * range, Vector3.zero, false));

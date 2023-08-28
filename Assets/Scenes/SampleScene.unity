@@ -685,7 +685,8 @@ MonoBehaviour:
     NetworkTransport: {fileID: 1351280532}
     PlayerPrefab: {fileID: 3822947549657545308, guid: 0911ffbf1a12ee446bb4acb3ec4395a8, type: 3}
     Prefabs:
-      NetworkPrefabsLists: []
+      NetworkPrefabsLists:
+      - {fileID: 11400000, guid: b53f83fee6a35a84b8bbb5c6e4ed9cfc, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -701,12 +702,7 @@ MonoBehaviour:
     LoadSceneTimeOut: 120
     SpawnTimeout: 1
     EnableNetworkLogs: 1
-    OldPrefabList:
-    - Override: 0
-      Prefab: {fileID: 3822947549657545308, guid: 0911ffbf1a12ee446bb4acb3ec4395a8, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
+    OldPrefabList: []
 --- !u!4 &1351280534
 Transform:
   m_ObjectHideFlags: 0
