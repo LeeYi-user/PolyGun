@@ -21,6 +21,8 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private Animator animator;
 
     public GameObject mainCamera;
+    public SkinnedMeshRenderer mainBody;
+    public SkinnedMeshRenderer fakeGun;
 
     // Update is called once per frame
     void Update()
@@ -29,6 +31,11 @@ public class PlayerMovement : NetworkBehaviour
         {
             mainCamera.SetActive(false);
             return;
+        }
+        else
+        {
+            mainBody.enabled = false;
+            fakeGun.enabled = false;
         }
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
