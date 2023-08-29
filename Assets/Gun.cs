@@ -33,6 +33,8 @@ public class Gun : NetworkBehaviour
     void Start()
     {
         currentAmmo = maxAmmo;
+
+        fakeMuzzleFlash.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -75,7 +77,7 @@ public class Gun : NetworkBehaviour
     void Shoot()
     {
         muzzleFlash.Play();
-        fakeMuzzleFlash.Play();
+        PlayFakeMuzzleFlash_ServerRpc(NetworkObjectId);
         animator.SetTrigger("isFiring");
         fakeAnimator.SetTrigger("isFiring");
 
@@ -105,6 +107,18 @@ public class Gun : NetworkBehaviour
             StartCoroutine(SpawnTrail(trail, BulletSpawnPoint.position + fpsCam.transform.forward * range, Vector3.zero, false));
             StartCoroutine(SpawnTrail(fakeTrail, fakeBulletSpawnPoint.position + fpsCam.transform.forward * range, Vector3.zero, false));
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void PlayFakeMuzzleFlash_ServerRpc(ulong objectId)
+    {
+        PlayFakeMuzzleFlash_ClientRpc(objectId);
+    }
+
+    [ClientRpc]
+    private void PlayFakeMuzzleFlash_ClientRpc(ulong objectId)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects[objectId].gameObject.GetComponent<Gun>().fakeMuzzleFlash.Play();
     }
 
     private IEnumerator SpawnTrail(TrailRenderer Trail, Vector3 HitPoint, Vector3 HitNormal, bool MadeImpact)

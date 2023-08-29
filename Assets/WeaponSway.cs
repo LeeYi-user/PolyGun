@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class WeaponSway : MonoBehaviour {
 
+    public GameObject gun;
+
     [Header("Sway Settings")]
     [SerializeField] private float smooth;
     [SerializeField] private float multiplier;
@@ -21,6 +23,6 @@ public class WeaponSway : MonoBehaviour {
         Quaternion targetRotation = rotationX * rotationY;
 
         // rotate 
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, smooth * Time.deltaTime);
+        gun.transform.localRotation = Quaternion.Slerp(gun.transform.localRotation, targetRotation, smooth * Time.deltaTime);
     }
 }

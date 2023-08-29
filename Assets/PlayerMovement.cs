@@ -24,20 +24,24 @@ public class PlayerMovement : NetworkBehaviour
     public SkinnedMeshRenderer mainBody;
     public SkinnedMeshRenderer fakeGun;
 
-    // Update is called once per frame
-    void Update()
+    // Start is called before the first frame update
+    void Start()
     {
         if (!IsOwner)
         {
+            gameObject.GetComponent<PlayerMovement>().enabled = false;
+            gameObject.GetComponent<Gun>().enabled = false;
             mainCamera.SetActive(false);
             return;
         }
-        else
-        {
-            mainBody.enabled = false;
-            fakeGun.enabled = false;
-        }
 
+        mainBody.enabled = false;
+        fakeGun.enabled = false;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         if (isGrounded && velocity.y < 0)
