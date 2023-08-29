@@ -87,25 +87,13 @@ public class Gun : NetworkBehaviour
 
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
-            TrailRenderer trail = Instantiate(BulletTrail, BulletSpawnPoint.position, Quaternion.identity);
-            TrailRenderer fakeTrail = Instantiate(BulletTrail, fakeBulletSpawnPoint.position, Quaternion.identity);
-
-            fakeTrail.GetComponent<NetworkObject>().Spawn(true);
-            fakeTrail.gameObject.SetActive(false);
-
-            StartCoroutine(SpawnTrail(trail, hit.point, hit.normal, true));
-            StartCoroutine(SpawnTrail(fakeTrail, hit.point, hit.normal, true));
+            CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, BulletSpawnPoint.position, true, hit.point, hit.normal, true, fpsCam.transform.forward);
+            CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, fakeBulletSpawnPoint.position, false, hit.point, hit.normal, true, fpsCam.transform.forward);
         }
         else
         {
-            TrailRenderer trail = Instantiate(BulletTrail, BulletSpawnPoint.position, Quaternion.identity);
-            TrailRenderer fakeTrail = Instantiate(BulletTrail, fakeBulletSpawnPoint.position, Quaternion.identity);
-
-            fakeTrail.GetComponent<NetworkObject>().Spawn(true);
-            fakeTrail.gameObject.SetActive(false);
-
-            StartCoroutine(SpawnTrail(trail, BulletSpawnPoint.position + fpsCam.transform.forward * range, Vector3.zero, false));
-            StartCoroutine(SpawnTrail(fakeTrail, fakeBulletSpawnPoint.position + fpsCam.transform.forward * range, Vector3.zero, false));
+            CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, BulletSpawnPoint.position, true, hit.point, hit.normal, false, fpsCam.transform.forward);
+            CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, fakeBulletSpawnPoint.position, false, hit.point, hit.normal, false, fpsCam.transform.forward);
         }
     }
 
@@ -121,7 +109,37 @@ public class Gun : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects[objectId].gameObject.GetComponent<Gun>().fakeMuzzleFlash.Play();
     }
 
-    private IEnumerator SpawnTrail(TrailRenderer Trail, Vector3 HitPoint, Vector3 HitNormal, bool MadeImpact)
+    [ServerRpc(RequireOwnership = false)]
+    private void CreateBulletTrail_ServerRpc(ulong playerId, Vector3 position, bool real, Vector3 HitPoint, Vector3 HitNormal, bool MadeImpact, Vector3 forward)
+    {
+        TrailRenderer trail = Instantiate(BulletTrail, position, Quaternion.identity);
+
+        trail.GetComponent<NetworkObject>().Spawn(true);
+
+        if (MadeImpact)
+        {
+            StartCoroutine(SpawnTrail(trail, HitPoint, HitNormal, MadeImpact, real));
+        }
+        else
+        {
+            StartCoroutine(SpawnTrail(trail, position + forward * range, Vector3.zero, false, real));
+        }
+
+        CreateBulletTrail_ClientRpc(trail.GetComponent<NetworkObject>().NetworkObjectId, playerId, real);
+    }
+
+    [ClientRpc]
+    private void CreateBulletTrail_ClientRpc(ulong objectId, ulong ownerId, bool real)
+    {
+        GameObject trailGO = NetworkManager.SpawnManager.SpawnedObjects[objectId].gameObject;
+
+        if ((ownerId == NetworkManager.Singleton.LocalClientId && !real) || (ownerId != NetworkManager.Singleton.LocalClientId && real))
+        {
+            trailGO.SetActive(false);
+        }
+    }
+
+    private IEnumerator SpawnTrail(TrailRenderer Trail, Vector3 HitPoint, Vector3 HitNormal, bool MadeImpact, bool real)
     {
         Vector3 startPosition = Trail.transform.position;
         float distance = Vector3.Distance(Trail.transform.position, HitPoint);
@@ -138,9 +156,10 @@ public class Gun : NetworkBehaviour
 
         Trail.transform.position = HitPoint;
 
-        if (MadeImpact)
+        if (MadeImpact && real)
         {
             GameObject impactGO = Instantiate(impactEffect, HitPoint, Quaternion.LookRotation(HitNormal));
+            impactGO.GetComponent<NetworkObject>().Spawn(true);
             Destroy(impactGO, 2f);
         }
 

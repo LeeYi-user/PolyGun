@@ -245,7 +245,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   animator: {fileID: 3822947550885083800}
-  mainCamera: {fileID: 3822947551056364194}
+  mainCamera: {fileID: 3822947551056364192}
   weaponCamera: {fileID: 3822947550303305086}
   realGun: {fileID: 4164914154609366634}
   mainBody: {fileID: 6325516242415461116}
