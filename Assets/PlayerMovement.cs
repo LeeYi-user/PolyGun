@@ -20,7 +20,9 @@ public class PlayerMovement : NetworkBehaviour
 
     [SerializeField] private Animator animator;
 
-    public GameObject mainCamera;
+    public Camera mainCamera;
+    public GameObject weaponCamera;
+    public GameObject realGun;
     public SkinnedMeshRenderer mainBody;
     public SkinnedMeshRenderer fakeGun;
 
@@ -31,7 +33,9 @@ public class PlayerMovement : NetworkBehaviour
         {
             gameObject.GetComponent<PlayerMovement>().enabled = false;
             gameObject.GetComponent<Gun>().enabled = false;
-            mainCamera.SetActive(false);
+            mainCamera.enabled = false;
+            weaponCamera.SetActive(false);
+            realGun.SetActive(false);
             return;
         }
 
