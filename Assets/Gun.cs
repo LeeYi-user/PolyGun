@@ -85,7 +85,7 @@ public class Gun : NetworkBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range, LayerMask.GetMask("Hittable")))
         {
             CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, BulletSpawnPoint.position, true, hit.point, hit.normal, true, fpsCam.transform.forward);
             CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, fakeBulletSpawnPoint.position, false, hit.point, hit.normal, true, fpsCam.transform.forward);

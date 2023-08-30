@@ -42,6 +42,7 @@ public class PlayerMovement : NetworkBehaviour
             return;
         }
 
+        gameObject.layer = LayerMask.NameToLayer("Default");
         mainBody.enabled = false;
         fakeGun.enabled = false;
     }
