@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Gun : NetworkBehaviour
 {
-    public float damage = 10f;
+    public float damage = 15f;
     public float range = 100f;
     public float fireRate = 2f;
 
@@ -87,6 +87,11 @@ public class Gun : NetworkBehaviour
 
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range, LayerMask.GetMask("Hittable")))
         {
+            if (hit.transform.gameObject.CompareTag("Player"))
+            {
+                ShootPlayer_ServerRpc(hit.transform.gameObject.GetComponent<NetworkObject>().NetworkObjectId, damage);
+            }
+
             CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, BulletSpawnPoint.position, true, hit.point, hit.normal, true, fpsCam.transform.forward);
             CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, fakeBulletSpawnPoint.position, false, hit.point, hit.normal, true, fpsCam.transform.forward);
         }
@@ -137,6 +142,18 @@ public class Gun : NetworkBehaviour
         {
             trailGO.SetActive(false);
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ShootPlayer_ServerRpc(ulong playerId, float damage)
+    {
+        ShootPlayer_ClientRpc(playerId, damage);
+    }
+
+    [ClientRpc]
+    private void ShootPlayer_ClientRpc(ulong playerId, float damage)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects[playerId].gameObject.GetComponent<HealthManager>().TakeDamage(damage);
     }
 
     private IEnumerator SpawnTrail(TrailRenderer Trail, Vector3 HitPoint, Vector3 HitNormal, bool MadeImpact, bool real)

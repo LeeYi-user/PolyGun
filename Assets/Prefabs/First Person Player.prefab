@@ -180,9 +180,10 @@ GameObject:
   - component: {fileID: 4743472089384102981}
   - component: {fileID: 5444561669274872448}
   - component: {fileID: 4638963399102591198}
+  - component: {fileID: 2805303001608951641}
   m_Layer: 3
   m_Name: First Person Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -311,7 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be5e90695bc0f0a47898bbbff024b319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 15
   range: 100
   fireRate: 2
   fpsCam: {fileID: 3822947551056364194}
@@ -342,6 +343,21 @@ MonoBehaviour:
   smooth: 8
   multiplier: 2
   originalRotationY: 90
+--- !u!114 &2805303001608951641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3822947549657545308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f47f2952dc9cf642a259dbc549459af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
+  maxHealth: 100
+  currentHealth: 0
 --- !u!1 &3822947549969778304
 GameObject:
   m_ObjectHideFlags: 0
