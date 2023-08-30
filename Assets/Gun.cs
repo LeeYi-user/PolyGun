@@ -29,9 +29,16 @@ public class Gun : NetworkBehaviour
     public ParticleSystem fakeMuzzleFlash;
     public Transform fakeBulletSpawnPoint;
 
+    private bool live = true;
+
     // Start is called before the first frame update
     void Start()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
         currentAmmo = maxAmmo;
 
         fakeMuzzleFlash.gameObject.SetActive(false);
@@ -40,7 +47,7 @@ public class Gun : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isReloading)
+        if (isReloading || !live)
         {
             return;
         }
@@ -137,26 +144,26 @@ public class Gun : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void CreateBulletTrail_ClientRpc(ulong objectId, ulong ownerId, bool real)
+    private void CreateBulletTrail_ClientRpc(ulong objectId, ulong playerId, bool real)
     {
         GameObject trailGO = NetworkManager.SpawnManager.SpawnedObjects[objectId].gameObject;
 
-        if ((ownerId == NetworkManager.Singleton.LocalClientId && !real) || (ownerId != NetworkManager.Singleton.LocalClientId && real))
+        if ((playerId == NetworkManager.Singleton.LocalClientId && !real) || (playerId != NetworkManager.Singleton.LocalClientId && real))
         {
             trailGO.SetActive(false);
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void ShootPlayer_ServerRpc(ulong playerId, float damage)
+    private void ShootPlayer_ServerRpc(ulong objectId, float damage)
     {
-        ShootPlayer_ClientRpc(playerId, damage);
+        ShootPlayer_ClientRpc(objectId, damage);
     }
 
     [ClientRpc]
-    private void ShootPlayer_ClientRpc(ulong playerId, float damage)
+    private void ShootPlayer_ClientRpc(ulong objectId, float damage)
     {
-        NetworkManager.SpawnManager.SpawnedObjects[playerId].gameObject.GetComponent<HealthManager>().TakeDamage(damage);
+        NetworkManager.SpawnManager.SpawnedObjects[objectId].gameObject.GetComponent<HealthManager>().TakeDamage(damage);
     }
 
     private IEnumerator SpawnTrail(TrailRenderer Trail, Vector3 HitPoint, Vector3 HitNormal, int MadeImpact, bool real)
@@ -184,5 +191,18 @@ public class Gun : NetworkBehaviour
         }
 
         Destroy(Trail.gameObject, Trail.time);
+    }
+
+    public void Despawn()
+    {
+        live = false;
+    }
+
+    public void Respawn()
+    {
+        live = true;
+        currentAmmo = maxAmmo;
+        isReloading = false;
+        nextTimeToFire = 0f;
     }
 }

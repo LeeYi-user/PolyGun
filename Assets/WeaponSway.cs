@@ -1,7 +1,9 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class WeaponSway : MonoBehaviour {
+public class WeaponSway : NetworkBehaviour {
 
     public GameObject gun;
 
@@ -10,8 +12,15 @@ public class WeaponSway : MonoBehaviour {
     [SerializeField] private float multiplier;
     [SerializeField] private float originalRotationY;
 
+    private bool live = true;
+
     private void Update()
     {
+        if (!live)
+        {
+            return;
+        }
+
         // get mouse input
         float mouseX = Input.GetAxisRaw("Mouse X") * multiplier + originalRotationY;
         float mouseY = Input.GetAxisRaw("Mouse Y") * multiplier;
@@ -24,5 +33,15 @@ public class WeaponSway : MonoBehaviour {
 
         // rotate 
         gun.transform.localRotation = Quaternion.Slerp(gun.transform.localRotation, targetRotation, smooth * Time.deltaTime);
+    }
+
+    public void Despawn()
+    {
+        live = false;
+    }
+
+    public void Respawn()
+    {
+        live = true;
     }
 }
