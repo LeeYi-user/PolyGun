@@ -11,7 +11,7 @@ public class Gun : NetworkBehaviour
 
     public Camera fpsCam;
     public ParticleSystem muzzleFlash;
-    public GameObject impactEffect;
+    public GameObject[] impactEffect;
 
     public int maxAmmo = 7;
     private int currentAmmo;
@@ -87,18 +87,21 @@ public class Gun : NetworkBehaviour
 
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range, LayerMask.GetMask("Hittable")))
         {
+            int MadeImpact = 0;
+
             if (hit.transform.gameObject.CompareTag("Player"))
             {
+                MadeImpact = 1;
                 ShootPlayer_ServerRpc(hit.transform.gameObject.GetComponent<NetworkObject>().NetworkObjectId, damage);
             }
 
-            CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, BulletSpawnPoint.position, true, hit.point, hit.normal, true, fpsCam.transform.forward);
-            CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, fakeBulletSpawnPoint.position, false, hit.point, hit.normal, true, fpsCam.transform.forward);
+            CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, BulletSpawnPoint.position, true, hit.point, hit.normal, MadeImpact, fpsCam.transform.forward);
+            CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, fakeBulletSpawnPoint.position, false, hit.point, hit.normal, MadeImpact, fpsCam.transform.forward);
         }
         else
         {
-            CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, BulletSpawnPoint.position, true, hit.point, hit.normal, false, fpsCam.transform.forward);
-            CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, fakeBulletSpawnPoint.position, false, hit.point, hit.normal, false, fpsCam.transform.forward);
+            CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, BulletSpawnPoint.position, true, hit.point, hit.normal, -1, fpsCam.transform.forward);
+            CreateBulletTrail_ServerRpc(NetworkManager.Singleton.LocalClientId, fakeBulletSpawnPoint.position, false, hit.point, hit.normal, -1, fpsCam.transform.forward);
         }
     }
 
@@ -115,19 +118,19 @@ public class Gun : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void CreateBulletTrail_ServerRpc(ulong playerId, Vector3 position, bool real, Vector3 HitPoint, Vector3 HitNormal, bool MadeImpact, Vector3 forward)
+    private void CreateBulletTrail_ServerRpc(ulong playerId, Vector3 position, bool real, Vector3 HitPoint, Vector3 HitNormal, int MadeImpact, Vector3 forward)
     {
         TrailRenderer trail = Instantiate(BulletTrail, position, Quaternion.identity);
 
         trail.GetComponent<NetworkObject>().Spawn(true);
 
-        if (MadeImpact)
+        if (MadeImpact > -1)
         {
             StartCoroutine(SpawnTrail(trail, HitPoint, HitNormal, MadeImpact, real));
         }
         else
         {
-            StartCoroutine(SpawnTrail(trail, position + forward * range, Vector3.zero, false, real));
+            StartCoroutine(SpawnTrail(trail, position + forward * range, Vector3.zero, MadeImpact, real));
         }
 
         CreateBulletTrail_ClientRpc(trail.GetComponent<NetworkObject>().NetworkObjectId, playerId, real);
@@ -156,7 +159,7 @@ public class Gun : NetworkBehaviour
         NetworkManager.SpawnManager.SpawnedObjects[playerId].gameObject.GetComponent<HealthManager>().TakeDamage(damage);
     }
 
-    private IEnumerator SpawnTrail(TrailRenderer Trail, Vector3 HitPoint, Vector3 HitNormal, bool MadeImpact, bool real)
+    private IEnumerator SpawnTrail(TrailRenderer Trail, Vector3 HitPoint, Vector3 HitNormal, int MadeImpact, bool real)
     {
         Vector3 startPosition = Trail.transform.position;
         float distance = Vector3.Distance(Trail.transform.position, HitPoint);
@@ -173,9 +176,9 @@ public class Gun : NetworkBehaviour
 
         Trail.transform.position = HitPoint;
 
-        if (MadeImpact && real)
+        if ((MadeImpact > -1) && real)
         {
-            GameObject impactGO = Instantiate(impactEffect, HitPoint, Quaternion.LookRotation(HitNormal));
+            GameObject impactGO = Instantiate(impactEffect[MadeImpact], HitPoint, Quaternion.LookRotation(HitNormal));
             impactGO.GetComponent<NetworkObject>().Spawn(true);
             Destroy(impactGO, 2f);
         }

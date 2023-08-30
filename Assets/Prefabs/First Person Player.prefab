@@ -317,7 +317,9 @@ MonoBehaviour:
   fireRate: 2
   fpsCam: {fileID: 3822947551056364194}
   muzzleFlash: {fileID: 4013474162772465089}
-  impactEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
+  impactEffect:
+  - {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
+  - {fileID: 1000010191825552, guid: 83e55d3418297934fab882559d009285, type: 3}
   maxAmmo: 7
   reloadTime: 1.35
   animator: {fileID: 3822947549797457173}

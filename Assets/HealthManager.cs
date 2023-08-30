@@ -10,6 +10,10 @@ public class HealthManager : NetworkBehaviour
     public float maxHealth = 100f;
     public float currentHealth;
 
+    private SkinnedMeshRenderer mainBody;
+    private Color originalColor;
+    private float flashTime = 0.15f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,12 +23,8 @@ public class HealthManager : NetworkBehaviour
         }
 
         currentHealth = maxHealth;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        mainBody = gameObject.GetComponent<PlayerMovement>().mainBody;
+        originalColor = mainBody.material.color;
     }
 
     public void TakeDamage(float damage)
@@ -35,5 +35,14 @@ public class HealthManager : NetworkBehaviour
         {
             healthBar.fillAmount = currentHealth / maxHealth;
         }
+
+        StartCoroutine(DamageFlash());
+    }
+
+    IEnumerator DamageFlash()
+    {
+        mainBody.material.color = Color.red;
+        yield return new WaitForSeconds(flashTime);
+        mainBody.material.color = originalColor;
     }
 }
