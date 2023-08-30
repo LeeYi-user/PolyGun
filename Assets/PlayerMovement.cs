@@ -33,8 +33,10 @@ public class PlayerMovement : NetworkBehaviour
         {
             gameObject.GetComponent<PlayerMovement>().enabled = false;
             gameObject.GetComponent<Gun>().enabled = false;
+            gameObject.GetComponent<WeaponSway>().enabled = false;
             mainCamera.GetComponent<Camera>().enabled = false;
             mainCamera.GetComponent<AudioListener>().enabled = false;
+            mainCamera.GetComponent<MouseLook>().enabled = false;
             weaponCamera.SetActive(false);
             realGun.SetActive(false);
             return;
