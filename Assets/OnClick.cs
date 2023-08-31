@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class OnClick : MonoBehaviour
 {
     public Button button;
     public TMP_InputField inputField;
+    public GameObject forScript;
+
+    private bool join;
 
     // Start is called before the first frame update
     void Start()
@@ -20,16 +24,27 @@ public class OnClick : MonoBehaviour
     {
         if (inputField.text != "")
         {
+            join = true;
             button.GetComponentInChildren<TMP_Text>().text = "JOIN";
         }
         else
         {
+            join = false;
             button.GetComponentInChildren<TMP_Text>().text = "HOST";
         }
     }
 
     void OnClickHandler()
     {
-        Debug.Log(inputField.text);
+        SceneManager.LoadScene("SampleScene");
+
+        if (join)
+        {
+            forScript.GetComponent<UnityRelay>().JoinRelay(inputField.text);
+        }
+        else
+        {
+            forScript.GetComponent<UnityRelay>().CreateRelay();
+        }
     }
 }

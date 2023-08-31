@@ -10,6 +10,7 @@ public class FrameRateLimit : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = fps;
+        DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame
