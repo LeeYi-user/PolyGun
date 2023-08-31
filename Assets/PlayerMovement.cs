@@ -44,6 +44,7 @@ public class PlayerMovement : NetworkBehaviour
             return;
         }
 
+        GameObject.Find("For Script").GetComponent<UnityRelay>().player = gameObject;
         GameObject.Find("Canvas").GetComponent<Canvas>().enabled = true;
         gameObject.layer = LayerMask.NameToLayer("Default");
         mainBody.enabled = false;

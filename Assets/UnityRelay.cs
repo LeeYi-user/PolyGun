@@ -9,20 +9,52 @@ using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UnityRelay : MonoBehaviour
 {
+    public GameObject player;
+    private bool playing;
+
     // Start is called before the first frame update
     private async void Start()
     {
         await UnityServices.InitializeAsync();
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+
+        try
+        {
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
+        catch (AuthenticationException e)
+        {
+            Debug.Log(e);
+        }
+
+        SceneManager.LoadScene("MenuScene");
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        if (player && !playing)
+        {
+            playing = true;
+        }
+
+        if (!player && playing)
+        {
+            playing = false;
+            Cursor.lockState = CursorLockMode.None;
+            SceneManager.LoadScene("MenuScene");
+        }
     }
 
     public async void CreateRelay()
     {
         try
         {
+            SceneManager.LoadScene("SampleScene");
+
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(4);
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
@@ -34,6 +66,7 @@ public class UnityRelay : MonoBehaviour
         }
         catch (RelayServiceException e)
         {
+            SceneManager.LoadScene("MenuScene");
             Debug.Log(e);
         }
     }
@@ -42,6 +75,8 @@ public class UnityRelay : MonoBehaviour
     {
         try
         {
+            SceneManager.LoadScene("SampleScene");
+
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
             RelayServerData relayServerData = new RelayServerData(joinAllocation, "dtls");
@@ -52,6 +87,7 @@ public class UnityRelay : MonoBehaviour
         }
         catch (RelayServiceException e)
         {
+            SceneManager.LoadScene("MenuScene");
             Debug.Log(e);
         }
     }

@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class OnClick : MonoBehaviour
 {
     public Canvas canvas;
     public Button button;
     public TMP_InputField inputField;
-    public GameObject forScript;
 
+    private GameObject forScript;
     private bool join;
 
     // Start is called before the first frame update
     void Start()
     {
+        forScript = GameObject.Find("For Script");
         button.onClick.AddListener(OnClickHandler);
     }
 
@@ -38,7 +38,6 @@ public class OnClick : MonoBehaviour
     void OnClickHandler()
     {
         canvas.enabled = false;
-        SceneManager.LoadScene("SampleScene");
 
         if (join)
         {
