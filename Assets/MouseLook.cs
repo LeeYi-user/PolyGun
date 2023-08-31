@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class MouseLook : NetworkBehaviour
 {
-    public bool focus = false;
     public float mouseSensitivity = 200f;
+
     public Transform mainCamera;
 
     float xRotation = 0f;
@@ -27,11 +27,10 @@ public class MouseLook : NetworkBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            focus = false;
             Cursor.lockState = CursorLockMode.None;
         }
 
-        if (!focus || !live)
+        if (Cursor.lockState == CursorLockMode.None || !live)
         {
             return;
         }

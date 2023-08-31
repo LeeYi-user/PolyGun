@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HealthManager : NetworkBehaviour
 {
@@ -42,6 +43,9 @@ public class HealthManager : NetworkBehaviour
         {
             live = false;
 
+            GameObject.Find("Crosshair").GetComponent<Image>().enabled = false;
+            GameObject.Find("Death Screen").GetComponent<Image>().enabled = true;
+            GameObject.Find("Death Message").GetComponent<TMP_Text>().enabled = true;
             gameObject.GetComponent<PlayerMovement>().Despawn();
             gameObject.GetComponent<Gun>().Despawn();
             gameObject.GetComponent<WeaponSway>().Despawn();
@@ -77,6 +81,9 @@ public class HealthManager : NetworkBehaviour
 
         live = true;
 
+        GameObject.Find("Crosshair").GetComponent<Image>().enabled = true;
+        GameObject.Find("Death Screen").GetComponent<Image>().enabled = false;
+        GameObject.Find("Death Message").GetComponent<TMP_Text>().enabled = false;
         gameObject.GetComponent<PlayerMovement>().Respawn();
         gameObject.GetComponent<Gun>().Respawn();
         gameObject.GetComponent<WeaponSway>().Respawn();

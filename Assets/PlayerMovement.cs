@@ -19,7 +19,6 @@ public class PlayerMovement : NetworkBehaviour
     bool isGrounded;
 
     [SerializeField] private Animator animator;
-    [SerializeField] private MouseLook mouseLook;
 
     public GameObject mainCamera;
     public GameObject weaponCamera;
@@ -70,7 +69,7 @@ public class PlayerMovement : NetworkBehaviour
         float x = 0;
         float z = 0;
 
-        if (mouseLook.focus)
+        if (Cursor.lockState == CursorLockMode.Locked)
         {
             x = Input.GetAxis("Horizontal");
             z = Input.GetAxis("Vertical");
@@ -82,7 +81,7 @@ public class PlayerMovement : NetworkBehaviour
 
         animator.SetBool("isRunning", x != 0 || z != 0);
 
-        if (Input.GetButtonDown("Jump") && isGrounded && mouseLook.focus)
+        if (Input.GetButtonDown("Jump") && isGrounded && Cursor.lockState == CursorLockMode.Locked)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }

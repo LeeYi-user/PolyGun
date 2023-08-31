@@ -94,6 +94,6 @@ public class UnityRelay : MonoBehaviour
 
     void ShowCode(string joinCode)
     {
-        GameObject.Find("Code").GetComponent<TMP_Text>().text = joinCode;
+        GameObject.Find("Code").GetComponent<TMP_Text>().text = joinCode.ToUpper();
     }
 }

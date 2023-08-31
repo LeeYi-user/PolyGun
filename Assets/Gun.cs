@@ -20,7 +20,7 @@ public class Gun : NetworkBehaviour
     private float nextTimeToFire = 0f;
 
     [SerializeField] private Animator animator;
-    [SerializeField] private MouseLook mouseLook;
+
     [SerializeField] private Transform BulletSpawnPoint;
     [SerializeField] private TrailRenderer BulletTrail;
     [SerializeField] private float BulletSpeed = 100;
@@ -47,9 +47,8 @@ public class Gun : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Mouse1)) && !mouseLook.focus)
+        if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Mouse1)) && Cursor.lockState == CursorLockMode.None)
         {
-            mouseLook.focus = true;
             Cursor.lockState = CursorLockMode.Locked;
             return;
         }

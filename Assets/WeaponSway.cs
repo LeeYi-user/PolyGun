@@ -12,14 +12,11 @@ public class WeaponSway : NetworkBehaviour {
     [SerializeField] private float multiplier;
     [SerializeField] private float originalRotationY;
 
-    [Header("Mouse Settings")]
-    [SerializeField] private MouseLook mouseLook;
-
     private bool live = true;
 
     private void Update()
     {
-        if (!mouseLook.focus || !live)
+        if (Cursor.lockState == CursorLockMode.None || !live)
         {
             return;
         }
