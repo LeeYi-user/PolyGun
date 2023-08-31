@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class MouseLook : NetworkBehaviour
 {
+    public bool focus = true;
     public float mouseSensitivity = 200f;
-
     public Transform mainCamera;
 
     float xRotation = 0f;
@@ -27,7 +27,13 @@ public class MouseLook : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!live)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            focus = false;
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+        if (!focus || !live)
         {
             return;
         }
@@ -45,12 +51,10 @@ public class MouseLook : NetworkBehaviour
     public void Despawn()
     {
         live = false;
-        Cursor.lockState = CursorLockMode.None;
     }
 
     public void Respawn()
     {
         live = true;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 }

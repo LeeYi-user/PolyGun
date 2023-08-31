@@ -325,6 +325,7 @@ MonoBehaviour:
   maxAmmo: 7
   reloadTime: 1.35
   animator: {fileID: 3822947549797457173}
+  mouseLook: {fileID: 1443490505892443801}
   BulletSpawnPoint: {fileID: 3820147012907205835}
   BulletTrail: {fileID: 6082088667196707117, guid: 84077dac0b5c6f64fb7baa8d8751f7a5, type: 3}
   BulletSpeed: 100
@@ -347,6 +348,7 @@ MonoBehaviour:
   smooth: 8
   multiplier: 2
   originalRotationY: 90
+  mouseLook: {fileID: 1443490505892443801}
 --- !u!114 &2805303001608951641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,6 +376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fee0102a127d1e1479a80c69f01e2601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focus: 1
   mouseSensitivity: 200
   mainCamera: {fileID: 3822947551056364197}
 --- !u!136 &6091959590787889970
