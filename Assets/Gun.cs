@@ -47,7 +47,7 @@ public class Gun : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && !mouseLook.focus)
+        if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Mouse1)) && !mouseLook.focus)
         {
             mouseLook.focus = true;
             Cursor.lockState = CursorLockMode.Locked;

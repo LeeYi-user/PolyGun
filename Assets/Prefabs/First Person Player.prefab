@@ -248,6 +248,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   animator: {fileID: 3822947550885083800}
+  mouseLook: {fileID: 1443490505892443801}
   mainCamera: {fileID: 3822947551056364192}
   weaponCamera: {fileID: 3822947550303305086}
   realGun: {fileID: 4164914154609366634}
@@ -364,6 +365,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   maxHealth: 100
   currentHealth: 0
+  respawnTime: 2
 --- !u!114 &1443490505892443801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,7 +378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fee0102a127d1e1479a80c69f01e2601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focus: 1
+  focus: 0
   mouseSensitivity: 200
   mainCamera: {fileID: 3822947551056364197}
 --- !u!136 &6091959590787889970

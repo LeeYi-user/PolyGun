@@ -9,6 +9,7 @@ public class HealthManager : NetworkBehaviour
     public Image healthBar;
     public float maxHealth = 100f;
     public float currentHealth;
+    public float respawnTime = 2f;
 
     private SkinnedMeshRenderer mainBody;
     private Color originalColor;
@@ -47,25 +48,7 @@ public class HealthManager : NetworkBehaviour
             gameObject.GetComponent<MouseLook>().Despawn();
 
             PlayerDespawn_ServerRpc(NetworkObjectId, NetworkManager.Singleton.LocalClientId);
-        }
-
-        if (!live && Input.GetButtonDown("Jump"))
-        {
-            live = true;
-
-            gameObject.GetComponent<PlayerMovement>().Respawn();
-            gameObject.GetComponent<Gun>().Respawn();
-            gameObject.GetComponent<WeaponSway>().Respawn();
-            gameObject.GetComponent<MouseLook>().Respawn();
-
-            currentHealth = maxHealth;
-
-            if (healthBar)
-            {
-                healthBar.fillAmount = currentHealth / maxHealth;
-            }
-
-            PlayerRespawn_ServerRpc(NetworkObjectId, NetworkManager.Singleton.LocalClientId);
+            StartCoroutine(Respawn());
         }
     }
 
@@ -86,6 +69,27 @@ public class HealthManager : NetworkBehaviour
         mainBody.material.color = Color.red;
         yield return new WaitForSeconds(flashTime);
         mainBody.material.color = originalColor;
+    }
+
+    IEnumerator Respawn()
+    {
+        yield return new WaitForSeconds(respawnTime);
+
+        live = true;
+
+        gameObject.GetComponent<PlayerMovement>().Respawn();
+        gameObject.GetComponent<Gun>().Respawn();
+        gameObject.GetComponent<WeaponSway>().Respawn();
+        gameObject.GetComponent<MouseLook>().Respawn();
+
+        currentHealth = maxHealth;
+
+        if (healthBar)
+        {
+            healthBar.fillAmount = currentHealth / maxHealth;
+        }
+
+        PlayerRespawn_ServerRpc(NetworkObjectId, NetworkManager.Singleton.LocalClientId);
     }
 
     [ServerRpc(RequireOwnership = false)]

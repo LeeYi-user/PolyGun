@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MouseLook : NetworkBehaviour
 {
-    public bool focus = true;
+    public bool focus = false;
     public float mouseSensitivity = 200f;
     public Transform mainCamera;
 
@@ -20,8 +20,6 @@ public class MouseLook : NetworkBehaviour
         {
             return;
         }
-
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
