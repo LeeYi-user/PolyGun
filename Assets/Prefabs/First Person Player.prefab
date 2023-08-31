@@ -182,6 +182,7 @@ GameObject:
   - component: {fileID: 4638963399102591198}
   - component: {fileID: 2805303001608951641}
   - component: {fileID: 1443490505892443801}
+  - component: {fileID: 6091959590787889970}
   m_Layer: 3
   m_Name: First Person Player
   m_TagString: Player
@@ -218,13 +219,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2.4
+  m_Height: 2.2
   m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.7
-  m_SkinWidth: 0.0001
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.7, z: 0}
+  m_SkinWidth: 0.01
+  m_MinMoveDistance: 0
+  m_Center: {x: 0, y: 1.6, z: 0}
 --- !u!114 &3822947549657545281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,6 +376,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseSensitivity: 200
   mainCamera: {fileID: 3822947551056364197}
+--- !u!136 &6091959590787889970
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3822947549657545308}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.3
+  m_Height: 2.2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.6, z: 0}
 --- !u!1 &3822947549969778304
 GameObject:
   m_ObjectHideFlags: 0

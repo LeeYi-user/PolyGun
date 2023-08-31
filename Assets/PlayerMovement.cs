@@ -98,7 +98,7 @@ public class PlayerMovement : NetworkBehaviour
     public void Respawn()
     {
         live = true;
-        gameObject.transform.position = new Vector3(0f, 0.5f, 0f);
+        gameObject.transform.position = new Vector3(0f, 0f, 0f);
         gameObject.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         realGun.SetActive(true);
     }
