@@ -476,6 +476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7e2f88a81a59848ab15966cc40f881, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 577780297}
   button: {fileID: 547251914}
   inputField: {fileID: 2022386501}
   forScript: {fileID: 1593680272}

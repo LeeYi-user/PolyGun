@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class OnClick : MonoBehaviour
 {
+    public Canvas canvas;
     public Button button;
     public TMP_InputField inputField;
     public GameObject forScript;
@@ -36,6 +37,7 @@ public class OnClick : MonoBehaviour
 
     void OnClickHandler()
     {
+        canvas.enabled = false;
         SceneManager.LoadScene("SampleScene");
 
         if (join)
