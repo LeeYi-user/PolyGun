@@ -55,7 +55,7 @@ public class PlayerMovement : NetworkBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P) && Cursor.lockState == CursorLockMode.Locked)
         {
             NetworkManager.Singleton.Shutdown();
         }
