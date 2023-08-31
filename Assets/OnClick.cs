@@ -11,7 +11,6 @@ public class OnClick : MonoBehaviour
     public TMP_InputField inputField;
 
     private GameObject forScript;
-    private bool join;
 
     // Start is called before the first frame update
     void Start()
@@ -23,15 +22,13 @@ public class OnClick : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (inputField.text != "")
+        if (inputField.text == "")
         {
-            join = true;
-            button.GetComponentInChildren<TMP_Text>().text = "JOIN";
+            button.GetComponentInChildren<TMP_Text>().text = "HOST";
         }
         else
         {
-            join = false;
-            button.GetComponentInChildren<TMP_Text>().text = "HOST";
+            button.GetComponentInChildren<TMP_Text>().text = "JOIN";
         }
     }
 
@@ -39,13 +36,13 @@ public class OnClick : MonoBehaviour
     {
         canvas.enabled = false;
 
-        if (join)
+        if (button.GetComponentInChildren<TMP_Text>().text == "HOST")
         {
-            forScript.GetComponent<UnityRelay>().JoinRelay(inputField.text);
+            forScript.GetComponent<UnityRelay>().CreateRelay();
         }
         else
         {
-            forScript.GetComponent<UnityRelay>().CreateRelay();
+            forScript.GetComponent<UnityRelay>().JoinRelay(inputField.text);
         }
     }
 }

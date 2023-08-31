@@ -14,7 +14,7 @@ using UnityEngine.SceneManagement;
 public class UnityRelay : MonoBehaviour
 {
     public GameObject player;
-    private bool playing;
+    private bool playing = false;
 
     // Start is called before the first frame update
     private async void Start()

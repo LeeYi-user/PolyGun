@@ -47,9 +47,9 @@ public class HealthManager : NetworkBehaviour
             GameObject.Find("Death Screen").GetComponent<Image>().enabled = true;
             GameObject.Find("Death Message").GetComponent<TMP_Text>().enabled = true;
             gameObject.GetComponent<PlayerMovement>().Despawn();
-            gameObject.GetComponent<Gun>().Despawn();
             gameObject.GetComponent<WeaponSway>().Despawn();
             gameObject.GetComponent<MouseLook>().Despawn();
+            gameObject.GetComponent<Gun>().Despawn();
 
             PlayerDespawn_ServerRpc(NetworkObjectId, NetworkManager.Singleton.LocalClientId);
             StartCoroutine(Respawn());
@@ -85,9 +85,9 @@ public class HealthManager : NetworkBehaviour
         GameObject.Find("Death Screen").GetComponent<Image>().enabled = false;
         GameObject.Find("Death Message").GetComponent<TMP_Text>().enabled = false;
         gameObject.GetComponent<PlayerMovement>().Respawn();
-        gameObject.GetComponent<Gun>().Respawn();
         gameObject.GetComponent<WeaponSway>().Respawn();
         gameObject.GetComponent<MouseLook>().Respawn();
+        gameObject.GetComponent<Gun>().Respawn();
 
         currentHealth = maxHealth;
 
@@ -112,9 +112,9 @@ public class HealthManager : NetworkBehaviour
 
         if (playerId != NetworkManager.Singleton.LocalClientId)
         {
-            playerGO.layer = LayerMask.NameToLayer("Default");
             playerGO.GetComponent<PlayerMovement>().mainBody.enabled = false;
             playerGO.GetComponent<PlayerMovement>().fakeGun.enabled = false;
+            playerGO.layer = LayerMask.NameToLayer("Default");
         }
     }
 
@@ -131,9 +131,9 @@ public class HealthManager : NetworkBehaviour
 
         if (playerId != NetworkManager.Singleton.LocalClientId)
         {
-            playerGO.layer = LayerMask.NameToLayer("Hittable");
             playerGO.GetComponent<PlayerMovement>().mainBody.enabled = true;
             playerGO.GetComponent<PlayerMovement>().fakeGun.enabled = true;
+            playerGO.layer = LayerMask.NameToLayer("Hittable");
         }
     }
 }

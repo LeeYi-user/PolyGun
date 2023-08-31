@@ -33,10 +33,6 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (!IsOwner)
         {
-            gameObject.GetComponent<PlayerMovement>().enabled = false;
-            gameObject.GetComponent<Gun>().enabled = false;
-            gameObject.GetComponent<WeaponSway>().enabled = false;
-            gameObject.GetComponent<MouseLook>().enabled = false;
             mainCamera.GetComponent<Camera>().enabled = false;
             mainCamera.GetComponent<AudioListener>().enabled = false;
             weaponCamera.SetActive(false);
@@ -54,6 +50,16 @@ public class PlayerMovement : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
+
         if (!live)
         {
             return;

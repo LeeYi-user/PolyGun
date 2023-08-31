@@ -16,7 +16,7 @@ public class WeaponSway : NetworkBehaviour {
 
     private void Update()
     {
-        if (Cursor.lockState == CursorLockMode.None || !live)
+        if (!IsOwner || Cursor.lockState == CursorLockMode.None || !live)
         {
             return;
         }

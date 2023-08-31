@@ -34,19 +34,22 @@ public class Gun : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (!IsOwner)
+        if (IsOwner)
         {
-            return;
+            fakeMuzzleFlash.gameObject.SetActive(false);
         }
 
         currentAmmo = maxAmmo;
-
-        fakeMuzzleFlash.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
         if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Mouse1)) && Cursor.lockState == CursorLockMode.None)
         {
             Cursor.lockState = CursorLockMode.Locked;
