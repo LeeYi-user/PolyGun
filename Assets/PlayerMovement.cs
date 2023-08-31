@@ -44,6 +44,7 @@ public class PlayerMovement : NetworkBehaviour
             return;
         }
 
+        GameObject.Find("Canvas").GetComponent<Canvas>().enabled = true;
         gameObject.layer = LayerMask.NameToLayer("Default");
         mainBody.enabled = false;
         fakeGun.enabled = false;
