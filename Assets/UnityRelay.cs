@@ -17,16 +17,7 @@ public class UnityRelay : MonoBehaviour
     private async void Start()
     {
         await UnityServices.InitializeAsync();
-
-        try
-        {
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        }
-        catch (AuthenticationException e)
-        {
-            Debug.Log(e);
-        }
-
+        await AuthenticationService.Instance.SignInAnonymouslyAsync();
         SceneManager.LoadScene("MenuScene");
     }
 
