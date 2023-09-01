@@ -13,9 +13,6 @@ using UnityEngine.SceneManagement;
 
 public class UnityRelay : MonoBehaviour
 {
-    public GameObject player;
-    private bool playing = false;
-
     // Start is called before the first frame update
     private async void Start()
     {
@@ -31,22 +28,6 @@ public class UnityRelay : MonoBehaviour
         }
 
         SceneManager.LoadScene("MenuScene");
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        if (player && !playing)
-        {
-            playing = true;
-        }
-
-        if (!player && playing)
-        {
-            playing = false;
-            Cursor.lockState = CursorLockMode.None;
-            SceneManager.LoadScene("MenuScene");
-        }
     }
 
     public async void CreateRelay()

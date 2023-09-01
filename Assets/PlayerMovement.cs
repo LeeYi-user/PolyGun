@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : NetworkBehaviour
 {
@@ -28,6 +29,8 @@ public class PlayerMovement : NetworkBehaviour
 
     bool live = true;
 
+    bool disconnect = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +43,6 @@ public class PlayerMovement : NetworkBehaviour
             return;
         }
 
-        GameObject.Find("For Script").GetComponent<UnityRelay>().player = gameObject;
         GameObject.Find("Canvas").GetComponent<Canvas>().enabled = true;
         gameObject.layer = LayerMask.NameToLayer("Default");
         mainBody.enabled = false;
@@ -59,6 +61,16 @@ public class PlayerMovement : NetworkBehaviour
         {
             NetworkManager.Singleton.Shutdown();
         }
+
+        NetworkManager.OnClientStopped += (bool _) =>
+        {
+            if (!disconnect)
+            {
+                disconnect = true;
+                Cursor.lockState = CursorLockMode.None;
+                SceneManager.LoadScene("MenuScene");
+            }
+        };
 
         if (!live)
         {
