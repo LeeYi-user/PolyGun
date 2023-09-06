@@ -20,12 +20,15 @@ public class Gun : NetworkBehaviour
     private float nextTimeToFire = 0f;
 
     [SerializeField] private Animator animator;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip audioClip;
 
     [SerializeField] private Transform BulletSpawnPoint;
     [SerializeField] private TrailRenderer BulletTrail;
     [SerializeField] private float BulletSpeed = 100;
 
     public Animator fakeAnimator;
+    public AudioSource fakeAudioSource;
     public ParticleSystem fakeMuzzleFlash;
     public Transform fakeBulletSpawnPoint;
 
@@ -96,6 +99,8 @@ public class Gun : NetworkBehaviour
         PlayFakeMuzzleFlash_ServerRpc(NetworkObjectId);
         animator.SetTrigger("isFiring");
         fakeAnimator.SetTrigger("isFiring");
+        audioSource.PlayOneShot(audioClip);
+        PlayFakeAudioSource_ServerRpc(NetworkObjectId);
 
         currentAmmo--;
 
@@ -131,6 +136,18 @@ public class Gun : NetworkBehaviour
     private void PlayFakeMuzzleFlash_ClientRpc(ulong objectId)
     {
         NetworkManager.SpawnManager.SpawnedObjects[objectId].gameObject.GetComponent<Gun>().fakeMuzzleFlash.Play();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void PlayFakeAudioSource_ServerRpc(ulong objectId)
+    {
+        PlayFakeAudioSource_ClientRpc(objectId);
+    }
+
+    [ClientRpc]
+    private void PlayFakeAudioSource_ClientRpc(ulong objectId)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects[objectId].gameObject.GetComponent<Gun>().fakeAudioSource.PlayOneShot(audioClip);
     }
 
     [ServerRpc(RequireOwnership = false)]
