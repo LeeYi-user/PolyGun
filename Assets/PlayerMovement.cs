@@ -8,6 +8,8 @@ public class PlayerMovement : NetworkBehaviour
 {
     public CharacterController controller;
 
+    Joystick joystick;
+
     public float speed = 12f;
     public float gravity = -19.62f;
     public float jumpHeight = 2f;
@@ -47,6 +49,15 @@ public class PlayerMovement : NetworkBehaviour
         gameObject.layer = LayerMask.NameToLayer("Default");
         mainBody.enabled = false;
         fakeGun.enabled = false;
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            joystick = GameObject.Find("Fixed Joystick").GetComponent<Joystick>();
+        }
+        else
+        {
+            GameObject.Find("Fixed Joystick").SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -87,7 +98,12 @@ public class PlayerMovement : NetworkBehaviour
         float x = 0;
         float z = 0;
 
-        if (Cursor.lockState == CursorLockMode.Locked)
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            x = joystick.Horizontal;
+            z = joystick.Vertical;
+        }
+        else if (Cursor.lockState == CursorLockMode.Locked)
         {
             x = Input.GetAxis("Horizontal");
             z = Input.GetAxis("Vertical");
