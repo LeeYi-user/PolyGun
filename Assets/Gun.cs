@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gun : NetworkBehaviour
 {
+    private Button fireButton;
+
     public float damage = 15f;
     public float range = 100f;
     public float fireRate = 2f;
@@ -42,6 +45,16 @@ public class Gun : NetworkBehaviour
             fakeMuzzleFlash.gameObject.SetActive(false);
         }
 
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            fireButton = GameObject.Find("Fire Button").GetComponent<Button>();
+            fireButton.onClick.AddListener(OnClick);
+        }
+        else
+        {
+            GameObject.Find("Fire Button").SetActive(false);
+        }
+
         currentAmmo = maxAmmo;
     }
 
@@ -70,7 +83,16 @@ public class Gun : NetworkBehaviour
             return;
         }
 
-        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
+        if (Application.platform != RuntimePlatform.Android && Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
+        {
+            nextTimeToFire = Time.time + 1f / fireRate;
+            Shoot();
+        }
+    }
+
+    public void OnClick()
+    {
+        if (Time.time >= nextTimeToFire)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
